@@ -1,0 +1,52 @@
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+    theme_text_color: root.theme_text_color   
+    text_color: root.text_color 
+
+    MDLabel:
+        text: "piSO2 Citizen Login"
+        font_style: "Button"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    ScrollView:
+
+        MDList:
+
+            OneLineListItem:
+                text: "Select Procedure File"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 1"
+    
+            OneLineListItem:
+                text: "Plot Graphs"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 2"
+
+            OneLineListItem:
+                text: "Show Saved Data"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 3"
+            
+            OneLineListItem:
+                text: "Results"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 4"
+            
+            OneLineListItem:
+                text: "File Options"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 5"
+
+            OneLineListItem:
+                text: "Researcher Login"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr_6"
