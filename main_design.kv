@@ -29,31 +29,12 @@ Screen:
         ScreenManagement:
             id: screen_manager
 
-            Screen:
+            FileSelection:
                 name: "scr 1"
-
-                MDLabel:
-                    text: "Select Procedure File"
-                    halign: 'center'
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
-                    
- 
-                MDRoundFlatIconButton:
-                    text: "Open manager"
-                    icon: "folder"
-                    pos_hint: {'center_x': .5, 'center_y': .6}
-                    on_release: app.file_manager_open()
-                MDFlatButton:
-                    text: "Upload & Start"
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    md_bg_color: app.theme_cls.primary_color
-                    elevation_normal: 12
 
             Plot:
                 name: "scr 2"
                 
-                
-
             Screen:
                 name: "scr 3"
 
@@ -79,10 +60,13 @@ Screen:
                 name: "scr 7"
 
                 
-
             Login:
                 id: s6
                 name: "scr_6"
+
+            FilePath:
+                name: "file"
+                
                 
   
         MDNavigationDrawer:
@@ -92,6 +76,36 @@ Screen:
                 id: content_drawer
                 screen_manager: screen_manager
                 nav_drawer: nav_drawer
+
+<FilePath>:
+    FileChooserIconView:
+        id:filechooser
+        size_hint: 0.9,0.9
+        path: "/Users/sairajeevkallalu/Desktop/assignments/project 3A/screens"
+        on_selection:
+            root.selected(filechooser.path,filechooser.selection)
+            root.manager.transition.direction = 'right'
+            root.change('scr 1')
+
+<FileSelection>:
+    MDLabel:
+        text: "Select Procedure File"
+        halign: 'center'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+        
+    MDRoundFlatIconButton:
+        text: "Open manager"
+        icon: "folder"
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        on_release: root.change('file')
+    MDFlatButton:
+        text: "Upload & Start"
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        md_bg_color: app.theme_cls.primary_color
+        elevation_normal: 12
+        on_release: 
+            root.getContents()
+
 
 <Plot>:
     graph_test : graph_test
