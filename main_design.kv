@@ -49,7 +49,7 @@ Screen:
                     md_bg_color: app.theme_cls.primary_color
                     elevation_normal: 12
 
-            ScreenTwo:
+            Plot:
                 name: "scr 2"
                 
                 
@@ -75,57 +75,15 @@ Screen:
                     text: "Screen for file options"
                     halign: "center"
             
-            ScreenFive:
+            Researcher:
                 name: "scr 7"
 
                 
 
-            Screen:
+            Login:
                 id: s6
                 name: "scr_6"
-                username: username
-                password: password
-
-                MDCard:
-                    size_hint: None, None
-                    size: dp(520), dp(340)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-
-                    BoxLayout:
-                        orientation:'vertical'
-                        padding: dp(20)
-                        spacing:20
-
-                        Image:
-                            id: latrobe
-                            pos_hint: {'center_x': .5, 'center_y': .7}
-                            size: "10dp", "10dp"
-                            source: "./lat_logo.png"
-                        MDLabel:
-                            text: "Researcher Login"
-                            halign: 'center'
-                            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
-
-                        MDTextField:
-                            id: username
-                            hint_text: "Username "
-                            helper_text_mode: "on_focus"
-
-                        MDTextField:
-                            id: password
-                            hint_text: "Password "
-                            helper_text_mode: "on_focus"
-                            password: True
-
-                        MDFlatButton:
-                            text: "Login"
-                            pos_hint: {'center_x': .5, 'center_y': .6}
-                            md_bg_color: app.theme_cls.primary_color
-                            elevation_normal: 12
-                            on_press: 
-                                if username.text != "researcher": app.gettoast("Invalid Username")
-                                elif password.text != "test123": app.gettoast("Invalid password")
-                                elif username.text == "researcher" and password.text == "test123": screen_manager.current = "scr 7"
+                
   
         MDNavigationDrawer:
             id: nav_drawer
@@ -135,7 +93,7 @@ Screen:
                 screen_manager: screen_manager
                 nav_drawer: nav_drawer
 
-<ScreenTwo>:
+<Plot>:
     graph_test : graph_test
     Graph:
         id: graph_test
@@ -159,9 +117,9 @@ Screen:
             text: "Start"
             on_press: root.come()
 
-<ScreenFive>
+<Researcher>:
     MDLabel:
-        text: "Welcome"
+        text: "Welcome"+" "
         font_size: '30sp'
         pos_hint: {'center_x': 0.5, 'center_y': 0.83}
         halign: "center" 
@@ -302,3 +260,48 @@ Screen:
         pos_hint: {'center_x': .7, 'center_y': .25}
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
+
+<Login>:
+    username: username
+    password: password
+
+    MDCard:
+        size_hint: None, None
+        size: dp(520), dp(340)
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        BoxLayout:
+            orientation:'vertical'
+            padding: dp(20)
+            spacing:20
+
+            Image:
+                id: latrobe
+                pos_hint: {'center_x': .5, 'center_y': .7}
+                size: "10dp", "10dp"
+                source: "./lat_logo.png"
+            MDLabel:
+                text: "Researcher Login"
+                halign: 'center'
+                pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+
+            MDTextField:
+                id: username
+                hint_text: "Username "
+                helper_text_mode: "on_focus"
+
+            MDTextField:
+                id: password
+                hint_text: "Password "
+                helper_text_mode: "on_focus"
+                password: True
+
+            MDFlatButton:
+                text: "Login"
+                pos_hint: {'center_x': .5, 'center_y': .6}
+                md_bg_color: app.theme_cls.primary_color
+                elevation_normal: 12
+                on_press: root.check(username.text, password.text)
+                    
+                    
+                    

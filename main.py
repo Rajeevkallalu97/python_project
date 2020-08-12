@@ -11,7 +11,18 @@ from kivymd.uix.filemanager import MDFileManager
 from kivymd.toast import toast
 from kivy_garden.graph import Graph, MeshLinePlot
 from math import sin
+import mysql.connector
+from mysql.connector import errorcode
 
+
+
+config = {
+  'user': 'root',
+  'password': '',
+  'host': '127.0.0.1',
+  'database': 'project',
+  'raise_on_warnings': True
+}
 
 class ScreenManagement(ScreenManager):
     pass
@@ -20,10 +31,38 @@ class ContentNavigationDrawer(BoxLayout):
     screen_manager = ObjectProperty()
     nav_drawer = ObjectProperty()   
 
-class ScreenFive(Screen):
+class Researcher(Screen):
     pass
 
-class ScreenTwo(Screen):
+class Login(Screen):
+
+    def gettoast(self,StringProperty):
+        toast(StringProperty)
+
+    def check(self, username, password):
+        connect = mysql.connector.connect(**config)
+        cursor = connect.cursor()
+        username1 = (username,)
+        id_query = "SELECT id FROM user_login WHERE id = %s"
+        cursor.execute(id_query,username1)
+        id = cursor.fetchall()
+        if not id:
+            self.gettoast("Invalid Username")
+        else:
+            password = (str(username),password)
+            password_query = "SELECT password FROM user_login WHERE id = %s AND password = %s"
+            cursor.execute(password_query,(password))
+            password = cursor.fetchall()
+            if not password:
+                self.gettoast("Invalid password")
+            else:
+                self.change()
+    def change(self):
+        self.manager.current = 'scr 7'
+
+
+
+class Plot(Screen):
     graph_test = ObjectProperty(None)
     def come(self):
         plot = MeshLinePlot(color=[1, 0, 0, 1])
@@ -43,8 +82,6 @@ class piSO2(MDApp):
             previous=True,
         )
 
-    def gettoast(self,StringProperty):
-        toast(StringProperty)
 
     def build(self):
         self.theme_cls.primary_palette = "Gray"
