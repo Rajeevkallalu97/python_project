@@ -81,9 +81,9 @@ Screen:
     FileChooserIconView:
         id:filechooser
         size_hint: 0.9,0.9
-        path: "/Users/sairajeevkallalu/Desktop/assignments/project 3A/screens"
+        path: "./"
         on_selection:
-            root.selected(filechooser.path,filechooser.selection)
+            root.selected(filechooser.selection)
             root.manager.transition.direction = 'right'
             root.change('scr 1')
 
@@ -112,7 +112,14 @@ Screen:
     MDLabel:
         text: "Please Select an Option to Plot"
         font_size: '30sp'
-        pos_hint: {'center_x': 0.5, 'center_y': 0.76}
+        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+        halign: "center" 
+    MDLabel:
+        id: "path_label"
+        text: root.path
+        theme_text_color: "Custom"
+        text_color: 1, 0.8, 0, 1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.72}
         halign: "center" 
     MDFlatButton:
         text: "Plot current vs time"
@@ -136,7 +143,7 @@ Screen:
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release: 
-            root.Harmonic = 1
+            root.harmonic = 1
             root.plot()
             
 

@@ -32,14 +32,12 @@ class ScreenManagement(ScreenManager):
 class FilePath(Screen):
     def change(self,name):
         self.manager.current = name
-    def selected(self, path, filename):
-        FileSelection.path = filename
+    def selected(self,filename):
         FileSelection.filename = filename[0]
         print(filename)
 
 class FileSelection(Screen):
-    path = ""
-    filename = ""
+    filename = StringProperty()
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -85,7 +83,8 @@ class Login(Screen):
 
 
 class Plot(Screen):
-    filename = ""
+    filename = StringProperty()
+    path = StringProperty('Data Taken From')
     current = 0
     current_modified = 0
     harmonic = 0
@@ -93,7 +92,11 @@ class Plot(Screen):
         if not self.filename:
             Login.gettoast("Please Select a File")
         else:
+            self.path = self.filename
             p.withFile(self.filename,self.current,self.current_modified,self.harmonic)
+            self.current = 0
+            self.current_modified = 0
+            self.harmonic = 0
 
 class piSO2(MDApp):
 
