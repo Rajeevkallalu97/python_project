@@ -105,31 +105,40 @@ Screen:
         elevation_normal: 12
         on_release: 
             root.getContents()
+            root.transition()
 
 
 <Plot>:
-    graph_test : graph_test
-    Graph:
-        id: graph_test
-        plot: MeshLinePlot
-        xlabel:'Potential'
-        ylabel:'Current'
-        x_ticks_minor:5
-        x_tics_major:25
-        y_ticks_major:1
-        y_grid_label:True
-        x_grid_label:True
-        padding:5
-        x_grid:True
-        y_grid:True
-        xmin:-0
-        xmax:100
-        ymin:-1
-        ymax:1
-        
-        MDRoundFlatIconButton:
-            text: "Start"
-            on_press: root.come()
+    MDLabel:
+        text: "Please Select an Option to Plot"
+        font_size: '30sp'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.76}
+        halign: "center" 
+    MDFlatButton:
+        text: "Plot current vs time"
+        pos_hint: {'center_x': .2, 'center_y': .6}
+        md_bg_color: app.theme_cls.primary_color
+        elevation_normal: 12
+        on_release: 
+            root.current = 1
+            root.plot()
+    MDFlatButton:
+        text: "Plot current vs time modified"
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        md_bg_color: app.theme_cls.primary_color
+        elevation_normal: 12
+        on_release: 
+            root.current_modified = 1
+            root.plot()
+    MDFlatButton:
+        text: "Plot Harmonic"
+        pos_hint: {'center_x': .8, 'center_y': .6}
+        md_bg_color: app.theme_cls.primary_color
+        elevation_normal: 12
+        on_release: 
+            root.Harmonic = 1
+            root.plot()
+            
 
 <Researcher>:
     MDLabel:

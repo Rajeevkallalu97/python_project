@@ -13,9 +13,9 @@ from kivy_garden.graph import Graph, MeshLinePlot
 from math import sin
 import mysql.connector
 from mysql.connector import errorcode
-
+import matplotlib.pyplot as plt
 import os
-
+import plot as p 
 
 config = {
   'user': 'root',
@@ -40,15 +40,15 @@ class FilePath(Screen):
 class FileSelection(Screen):
     path = ""
     filename = ""
+    def transition(self):
+        if not Plot.filename:
+            Login.gettoast("Please Select a file")
+        else:
+            self.change('scr 2')
     def change(self,name):
         self.manager.current = name
     def getContents(self):
-        f = open(self.filename, "r")
-        if f.mode == 'r':
-            contents = f.read()
-        for i in range(0,5):
-            print(contents)
-
+        Plot.filename = self.filename
 
 class ContentNavigationDrawer(BoxLayout):
     screen_manager = ObjectProperty()
@@ -59,7 +59,7 @@ class Researcher(Screen):
 
 class Login(Screen):
 
-    def gettoast(self,StringProperty):
+    def gettoast(StringProperty):
         toast(StringProperty)
 
     def check(self, username, password):
@@ -70,14 +70,14 @@ class Login(Screen):
         cursor.execute(id_query,username1)
         id = cursor.fetchall()
         if not id:
-            self.gettoast("Invalid Username")
+            Login.gettoast("Invalid Username")
         else:
             password = (str(username),password)
             password_query = "SELECT password FROM user_login WHERE id = %s AND password = %s"
             cursor.execute(password_query,(password))
             password = cursor.fetchall()
             if not password:
-                self.gettoast("Invalid password")
+                Login.gettoast("Invalid password")
             else:
                 self.change()
     def change(self):
@@ -85,13 +85,16 @@ class Login(Screen):
 
 
 class Plot(Screen):
-    graph_test = ObjectProperty(None)
-    def come(self):
-        plot = MeshLinePlot(color=[1, 0, 0, 1])
-        plot.points = [(x, sin(x / 10.)) for x in range(0, 101)]
-        self.graph_test.add_plot(plot)
-    
-     
+    filename = ""
+    current = 0
+    current_modified = 0
+    harmonic = 0
+    def plot(self):
+        if not self.filename:
+            Login.gettoast("Please Select a File")
+        else:
+            p.withFile(self.filename,self.current,self.current_modified,self.harmonic)
+
 class piSO2(MDApp):
 
     def build(self):
