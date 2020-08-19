@@ -5,32 +5,6 @@ import matplotlib.pyplot as plt
 import struct
 
 
-def save_data(file_name, data, parameters): # saves data in a binary file with parameters
-	
-	size = len(data[0])
-	with open(file_name, 'wb') as f:
-		f.write(struct.pack('9f', *[*parameters, size]))
-		f.write(struct.pack(str(size)+'f', *data[0])) # x coordinates
-		f.write(struct.pack(str(size)+'f', *data[1])) # y coordinates
-	print('parameters and coordinates have been saved to', file_name)
-
-def load_data(file_name): # reading a binary file created by save_data
-	
-	with open(file_name, 'rb') as f:
-		b = f.read() # buffer string
-		parameters = struct.unpack_from('9f', b, 0)
-		coords_count = int(parameters[8])
-		
-		x_coords = struct.unpack_from(str(coords_count) + 'f', b, struct.calcsize('9f'))
-		y_coords = struct.unpack_from(str(coords_count) + 'f', b, struct.calcsize(str(9+coords_count) +'f'))
-		
-		# temporary test to ensure that the file has been read in full
-		try:
-			struct.unpack_from('1f', b, struct.calcsize(str(9+coords_count*2) +'f'))
-		except struct.error:
-			print("Exception has been thrown which means the binary file has been fully read")
-
-		return parameters, x_coords, y_coords
 		
 def withFile(filename,current,current_modified,harmonic):
 	current = current
@@ -71,6 +45,7 @@ def withFile(filename,current,current_modified,harmonic):
 	f = n*df
 	t = n*dt
 
+	
 	v = inp[:,0]
 	i = inp[:,1]
 

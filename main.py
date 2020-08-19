@@ -36,6 +36,15 @@ class FilePath(Screen):
         FileSelection.filename = filename[0]
         print(filename)
 
+
+
+class FilePath_Researcher(Screen):
+    def change(self,name):
+        self.manager.current = name
+    def selected(self,filename):
+        FileSelection.filename = filename[0]
+        print(filename)
+
 class FileSelection(Screen):
     filename = StringProperty()
     def transition(self):
@@ -53,7 +62,16 @@ class ContentNavigationDrawer(BoxLayout):
     nav_drawer = ObjectProperty()   
 
 class Researcher(Screen):
-    pass
+    filename = StringProperty()
+    def transition(self):
+        if not Plot.filename:
+            Login.gettoast("Please Select a file")
+        else:
+            self.change('scr 2')
+    def change(self,name):
+        self.manager.current = name
+    def getContents(self):
+        Plot.filename = self.filename
 
 class Login(Screen):
 
