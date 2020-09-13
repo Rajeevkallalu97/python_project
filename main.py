@@ -56,8 +56,8 @@ class FileSelection(Screen):
                 fields = line.split(",")
             file.close()
             ext.excitation(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]),self.filename)
-            self.change('scr 2')
+            float(fields[4]),float(fields[5]),float(fields[6]),"")
+            self.change('scr 4')
     def change(self,name):
         self.manager.current = name
     def getContents(self):
@@ -73,7 +73,16 @@ class Researcher(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
-            self.change('scr 2')
+            file = open("excitation.txt","r")
+            for line in file:
+                fields = line.split(",")
+            file.close()
+            ext.excitation(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            float(fields[4]),float(fields[5]),float(fields[6]),"")
+            self.change('scr 4')
+    def parameter(self,amp,freq,stable,record,v1,v2,v3):
+        ext.excitation(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3),"")
+        self.change('scr 4')
     def change(self,name):
         self.manager.current = name
     def getContents(self):
