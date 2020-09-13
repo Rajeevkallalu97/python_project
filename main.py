@@ -16,6 +16,7 @@ from mysql.connector import errorcode
 import matplotlib.pyplot as plt
 import os
 import plot as p 
+import excitation as ext
 
 config = {
   'user': 'root',
@@ -37,7 +38,6 @@ class FilePath(Screen):
         print(filename)
 
 
-
 class FilePath_Researcher(Screen):
     def change(self,name):
         self.manager.current = name
@@ -51,6 +51,12 @@ class FileSelection(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
+            file = open("excitation.txt","r")
+            for line in file:
+                fields = line.split(",")
+            file.close()
+            ext.excitation(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            float(fields[4]),float(fields[5]),float(fields[6]),self.filename)
             self.change('scr 2')
     def change(self,name):
         self.manager.current = name
