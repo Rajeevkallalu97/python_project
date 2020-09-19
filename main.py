@@ -45,8 +45,12 @@ class FilePath_Researcher(Screen):
         FileSelection.filename = filename[0]
         print(filename)
 
+
+
+
 class FileSelection(Screen):
     filename = StringProperty()
+    result1 = StringProperty()
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -55,13 +59,20 @@ class FileSelection(Screen):
             for line in file:
                 fields = line.split(",")
             file.close()
-            ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
+            result1 = result[0]
             self.change('scr 4')
+
     def change(self,name):
         self.manager.current = name
     def getContents(self):
         Plot.filename = self.filename
+
+class Result(Screen):
+    result = StringProperty('test')
+    def result(self):
+        self.result = str(FileSelection.result1)
 
 class ContentNavigationDrawer(BoxLayout):
     screen_manager = ObjectProperty()
@@ -69,6 +80,7 @@ class ContentNavigationDrawer(BoxLayout):
 
 class Researcher(Screen):
     filename = StringProperty()
+
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -77,11 +89,11 @@ class Researcher(Screen):
             for line in file:
                 fields = line.split(",")
             file.close()
-            ext.excitation(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]),"")
+            result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            float(fields[4]),float(fields[5]),float(fields[6]))
             self.change('scr 4')
     def parameter(self,amp,freq,stable,record,v1,v2,v3):
-        ext.excitation(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3),"")
+        ext.temp_call(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3))
         self.change('scr 4')
     def change(self,name):
         self.manager.current = name

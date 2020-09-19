@@ -1,5 +1,4 @@
 #: include navigation.kv
-#:import MeshLinePlot kivy.garden.graph.MeshLinePlot
 
 Screen:
     BoxLayout:
@@ -42,12 +41,10 @@ Screen:
                     text: "Screen for showing saved data"
                     halign: "center"    
 
-            Screen:
+            Result:
+                id: result
                 name: "scr 4"
 
-                MDLabel:
-                    text: "Screen to show results"
-                    halign: "center"
 
             Screen:
                 name: "scr 5"
@@ -78,7 +75,15 @@ Screen:
                 id: content_drawer
                 screen_manager: screen_manager
                 nav_drawer: nav_drawer
-
+<Result>:
+    MDLabel:
+        text: 'root.result'
+        halign: "center"
+    MDRoundFlatIconButton:
+        text: "Get Results"
+        icon: "target"
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        #on_release: root.result()
 <FilePath>:
     FileChooserIconView:
         id:filechooser
@@ -101,7 +106,7 @@ Screen:
 
 <FileSelection>:
     MDLabel:
-        text: "Select Procedure File"
+        text: "Select The File"
         halign: 'center'
         pos_hint: {'center_x': 0.5, 'center_y': 0.7}
         
@@ -167,7 +172,7 @@ Screen:
         halign: "center" 
     
     MDLabel:
-        text: "Select Procedure File"
+        text: "Select The File"
         halign: 'center'
         pos_hint: {'center_x': 0.5, 'center_y': 0.78}
         

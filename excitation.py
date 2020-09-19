@@ -59,8 +59,8 @@ wine = '300ppm_s3_run1'
 
 def temp_call(stable, sample_rate, v1, v2, v3, frequency, duration):
     excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename)
-    analysis(filename_data) #uncomment to perform analysis as well as recording the potential
-
+    result = analysis(filename_data) #uncomment to perform analysis as well as recording the potential
+    return result
 ########################################################################
 def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename):
 
@@ -103,7 +103,8 @@ def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename):
     rec_data = sd.playrec(total_waveform, sample_rate, channels=1)
     time.sleep(stable+duration)
     sd.stop()
-    
+    #for i in rec_data:
+        #sd.play(i)
 
     print('Writing data to file')
     import scipy.io.wavfile as wf
