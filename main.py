@@ -55,8 +55,8 @@ class FileSelection(Screen):
             for line in file:
                 fields = line.split(",")
             file.close()
-            ext.excitation(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]),"")
+            ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            float(fields[4]),float(fields[5]),float(fields[6]))
             self.change('scr 4')
     def change(self,name):
         self.manager.current = name

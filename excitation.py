@@ -17,10 +17,7 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 import sounddevice as sd
-
 from datetime import datetime
-#from scipy import signal
-date = datetime.now().strftime("%d-%m-%Y_%I-%M_%p")
 import os
 import pandas as pd
 import numpy as np
@@ -31,6 +28,7 @@ import peakutils
 from datetime import datetime
 import ntpath
 
+date = datetime.now().strftime("%d-%m-%Y_%I-%M_%p")
 
 date_time = str(datetime.now().strftime("%d-%m-%Y_%I-%M-%S_%p"))
 path = os.getcwd()
@@ -39,6 +37,10 @@ if not os.path.exists(newpath):
     os.makedirs(newpath)
     
 
+file = open("excitation.txt","r")
+for line in file:
+  fields = line.split(",")
+file.close()
 
 ################## Settings - Change as you like #######################
 harmonic = 2
@@ -55,8 +57,12 @@ filename = str(newpath+'/' +filename_string + '_'+ date + '.wav')
 filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
 wine = '300ppm_s3_run1'
 
+def temp_call(stable, sample_rate, v1, v2, v3, frequency, duration):
+    excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename)
+    analysis(filename_data) #uncomment to perform analysis as well as recording the potential
+
 ########################################################################
-def excitation(stable, sample_rate, duration, frequency, v1, v2, v3, filename):
+def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename):
 
     startTime = datetime.now()
     print('Generating waveforms...')
@@ -185,12 +191,12 @@ def analysis(filename):
     
     sos = signal.butter(10, [low, high], 'bp', fs=Fs, output='sos')
     filtered = signal.sosfilt(sos, y)
-    myplot[2].plot(t, filtered)
-    myplot[2].set_title('After ' + str(low) + ' to ' + str(high) + ' Hz bandpass filter')
-    myplot[2].set_ylim((min(filtered)*1.1),(max(filtered)*1.1))
-    myplot[2].set_xlabel('Time [seconds]')
-    plt.tight_layout()
-    plt.show()
+    #myplot[2].plot(t, filtered)
+    #myplot[2].set_title('After ' + str(low) + ' to ' + str(high) + ' Hz bandpass filter')
+    #myplot[2].set_ylim((min(filtered)*1.1),(max(filtered)*1.1))
+    #myplot[2].set_xlabel('Time [seconds]')
+    #plt.tight_layout()
+    #plt.show()
     
     '''
     This function takes the upper envelope of the signal, the code is taken from 
@@ -228,13 +234,13 @@ def analysis(filename):
 
     
     # plots the upper envelope
-    myplot[3].plot(t[low_idx], s[low_idx], 'g', label='high')
-    myplot[3].set_title('Upper Envelope')
-    myplot[3].set_ylim(0,(max(s[low_idx])*1.05))
-    myplot[3].set_xlabel('Time [seconds]')
+    #myplot[3].plot(t[low_idx], s[low_idx], 'g', label='high')
+    #myplot[3].set_title('Upper Envelope')
+    #myplot[3].set_ylim(0,(max(s[low_idx])*1.05))
+    #myplot[3].set_xlabel('Time [seconds]')
     plt.tight_layout()
     fig.savefig(newpath+'/'+date_time+'_plot_1.png')
-    plt.show()
+    #plt.show()
     
     ################################################################ 
     # This section attempts to automatically detect the peak and   #
@@ -289,7 +295,7 @@ def analysis(filename):
     ax.set_xlim(0, 10)
     ax.set_ylim(0, (max(y)*1.1))
     fig.savefig(newpath+'/'+date_time+ '_'+ wine +'_plot_2.png')
-    plt.show()
+    #plt.show()
     
     x1 = x[index_x_min:index_x_max]
     y1 = y[index_x_min:index_x_max]
@@ -318,11 +324,11 @@ def analysis(filename):
     ax.set_ylim(0, ((max(y)*1.1)))
     ax.set_ylabel('Potential V')
     ax.set_xlabel('Time s')
-    ax.text(0.5, (0.9*peak_height), 'Peak Height ' + str(round(peak_height,2)),  style='normal',
+    ax.text(0.5, (0.9*peak_height), 'Peak Height ' + str(round(peak_height,4)),  style='normal',
             bbox={'facecolor': 'red', 'alpha': 0.5, 'pad': 10})
-    ax.text(0.5, (0.75*peak_height), 'Peak Area ' + str(round(area_between_curves,2))  ,  style='normal',
+    ax.text(0.5, (0.75*peak_height), 'Peak Area ' + str(round(area_between_curves,4))  ,  style='normal',
             bbox={'facecolor': 'blue', 'alpha': 0.5, 'pad': 10})
-    ax.text(0.5, (0.5*peak_height), 'Abs Peak Height ' + str(round(max(y),2))  ,  style='normal',
+    ax.text(0.5, (0.5*peak_height), 'Abs Peak Height ' + str(round(max(y),4))  ,  style='normal',
             bbox={'facecolor': 'green', 'alpha': 0.5, 'pad': 10})
     fig.savefig(newpath+'/'+date_time+'_'+wine+'_plot_3.png')
     plt.show()
@@ -332,5 +338,4 @@ def analysis(filename):
     return peak_height, area_between_curves, absolute_peak
     
 
-#excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename)
-#analysis(filename_data) #uncomment to perform analysis as well as recording the potential
+
