@@ -1,28 +1,10 @@
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.lang import Builder
+import math
+a=10
+b=20
+c=30
+value = 0.09
+val1 = 2-4*a*(c-value)
 
-Builder.load_string("""
-<ExampleApp>:
-    orientation: "vertical"
-    Button:
-        text: ""
-        on_press: gif.anim_delay = 0
-        on_press: gif._coreimage.anim_reset(True)
-
-        Image:
-            id: gif
-            source: 'img.gif'
-            center: self.parent.center
-            size: 500, 500
-            allow_stretch: True
-            anim_delay: -1
-            anim_loop: 1
-""")
-
-class ExampleApp(App, BoxLayout):
-    def build(self):
-        return self
-
-if __name__ == "__main__":
-    ExampleApp().run() 
+conc = (-b+math.sqrt(b ** val1))/(2*a)
+if conc > (-b/2*a)*0.85:
+    print("High concentration, out of calibration range")

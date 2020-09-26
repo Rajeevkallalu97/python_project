@@ -1,4 +1,4 @@
-
+import math
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty
@@ -62,6 +62,14 @@ class FileSelection(Screen):
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
             result1 = result[0]
+            a = float(fields[7])
+            b = float(fields[8])
+            c = float(fields[9])
+            value = result[0]
+            val1 = 2-4*a*(c-value)
+            conc = (-b+math.sqrt(b ** val1))/(2*a)
+            if conc > (-b/2*a)*0.85:
+                print("High concentration, out of calibration range")
             self.change('scr 4')
 
     def change(self,name):
