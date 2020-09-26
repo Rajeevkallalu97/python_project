@@ -100,8 +100,17 @@ class Researcher(Screen):
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
             self.change('scr 4')
-    def parameter(self,amp,freq,stable,record,v1,v2,v3):
-        ext.temp_call(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3))
+    def parameter(self,amp,freq,stable,record,v1,v2,v3,a,b,c):
+        result = ext.temp_call(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3))
+        result2 = result[0]
+        a = float(a)
+        b = float(b)
+        c = float(c)
+        value = result[0]
+        val1 = 2-4*a*(c-value)
+        conc = (-b+math.sqrt(b ** val1))/(2*a)
+        if conc > (-b/2*a)*0.85:
+            print("High concentration, out of calibration range")
         self.change('scr 4')
     def change(self,name):
         self.manager.current = name

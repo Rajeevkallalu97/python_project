@@ -289,29 +289,32 @@ Screen:
         pos_hint: {'center_x': 0.15, 'center_y': 0.25}
         hint_text: "3st V "
     
-    #MDLabel:
-        #text: "Constant's:"
-        #halign: 'center'
-        #pos_hint: {'center_x': 0.34, 'center_y': 0.35}
-    #MDTextFieldRect:
-        #size_hint: 0.1, None
-        #height: "30dp"
-        #halign: 'center'
-       # pos_hint: {'center_x': 0.45, 'center_y': 0.35}
-       # hint_text: "a "
-    #MDTextFieldRect:
-       # size_hint: 0.1, None
-        #height: "30dp"
-        #halign: 'center'
-        #pos_hint: {'center_x': 0.45, 'center_y': 0.3}
-        #hint_text: "b "
+    MDLabel:
+        text: "Constant's:"
+        halign: 'center'
+        pos_hint: {'center_x': 0.34, 'center_y': 0.35}
+    MDTextFieldRect:
+        id: a
+        size_hint: 0.1, None
+        height: "30dp"
+        halign: 'center'
+        pos_hint: {'center_x': 0.45, 'center_y': 0.35}
+        hint_text: "a "
+    MDTextFieldRect:
+        id: b
+        size_hint: 0.1, None
+        height: "30dp"
+        halign: 'center'
+        pos_hint: {'center_x': 0.45, 'center_y': 0.3}
+        hint_text: "b "
 
-    #MDTextFieldRect:
-        #size_hint: 0.1, None
-        #height: "30dp"
-        #halign: 'center'
-        #pos_hint: {'center_x': 0.45, 'center_y': 0.25}
-        #hint_text: "c "
+    MDTextFieldRect:
+        id: c
+        size_hint: 0.1, None
+        height: "30dp"
+        halign: 'center'
+        pos_hint: {'center_x': 0.45, 'center_y': 0.25}
+        hint_text: "c "
     MDFlatButton:
         text: "Upload & Start"
         pos_hint: {'center_x': .7, 'center_y': .25}
@@ -319,7 +322,7 @@ Screen:
         elevation_normal: 12
         on_release:
             root.parameter(amplititude.text,frequency.text,stable.text,record.text,
-            v1.text,v2.text,v3.text)
+            v1.text,v2.text,v3.text,a.text,b.text,c.text)
 
 
 <Login>:
