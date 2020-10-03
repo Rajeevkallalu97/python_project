@@ -26,9 +26,12 @@ config = {
   'raise_on_warnings': True
 }
 
+peak_area = 0.0
+peak_height = 0.0
+abs_peak_height = 0.0
+
 class ScreenManagement(ScreenManager):
     pass
-
 
 class FilePath(Screen):
     def change(self,name):
@@ -46,22 +49,29 @@ class FilePath_Researcher(Screen):
         print(filename)
 
 
-
-
 class FileSelection(Screen):
     filename = StringProperty()
     result1 = StringProperty()
+    result2 = StringProperty()
+    result3 = StringProperty()
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
+            global peak_area, peak_height, abs_peak_height
             file = open("excitation.txt","r")
             for line in file:
                 fields = line.split(",")
             file.close()
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
-            result1 = result[0]
+            self.result1 = str(result[0])
+            self.result2 = str(result[1])
+            self.result3 = str(result[2])
+            Results.p_area = self.result2
+            Results.p_height = self.result1
+            Results.abs_peak = self.result3
+            print(peak_area)
             a = float(fields[7])
             b = float(fields[8])
             c = float(fields[9])
@@ -77,10 +87,18 @@ class FileSelection(Screen):
     def getContents(self):
         Plot.filename = self.filename
 
-class Result(Screen):
-    result = StringProperty('test')
+class Results(Screen):
+    abs_peak = StringProperty()
+    p_height = StringProperty()
+    p_area = StringProperty()
     def result(self):
-        self.result = str(FileSelection.result1)
+        FileSelection.result1 = self.p_height
+        FileSelection.result2 = self.p_area
+        FileSelection.result3 = self.abs_peak
+        print(self.p_height)
+        print(self.p_area)
+        print(self.abs_peak)
+
 
 class ContentNavigationDrawer(BoxLayout):
     screen_manager = ObjectProperty()

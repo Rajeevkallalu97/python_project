@@ -41,7 +41,7 @@ Screen:
                     text: "Screen for showing saved data"
                     halign: "center"    
 
-            Result:
+            Results:
                 id: result
                 name: "scr 4"
 
@@ -75,15 +75,19 @@ Screen:
                 id: content_drawer
                 screen_manager: screen_manager
                 nav_drawer: nav_drawer
-<Result>:
+<Results>:
     MDLabel:
-        text: "test"
+        text: root.p_area
         halign: "center"
-    MDRoundFlatIconButton:
+    MDFlatButton:
         text: "Get Results"
-        icon: "target"
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        on_release: root.result1()
+        pos_hint: {'center_x': .5, 'center_y': .3}
+        md_bg_color: app.theme_cls.primary_color
+        elevation_normal: 12
+        on_release: 
+            root.result()
+   
+
 <FilePath>:
     FileChooserIconView:
         id:filechooser
