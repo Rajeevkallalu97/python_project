@@ -33,22 +33,36 @@ abs_peak_height = 0.0
 class ScreenManagement(ScreenManager):
     pass
 
-class FilePath(Screen):
-    def change(self,name):
-        self.manager.current = name
-    def selected(self,filename):
-        FileSelection.filename = filename[0]
-        print(filename)
+
+#Login class for researcher
+class Login(Screen):
+
+    def gettoast(StringProperty):
+        toast(StringProperty)
+
+    def check(self, username, password):
+        connect = mysql.connector.connect(**config)
+        cursor = connect.cursor()
+        username1 = (username,)
+        id_query = "SELECT id FROM user_login WHERE id = %s"
+        cursor.execute(id_query,username1)
+        id = cursor.fetchall()
+        if not id:
+            Login.gettoast("Invalid Username")
+        else:
+            password = (str(username),password)
+            password_query = "SELECT password FROM user_login WHERE id = %s AND password = %s"
+            cursor.execute(password_query,(password))
+            password = cursor.fetchall()
+            if not password:
+                Login.gettoast("Invalid password")
+            else:
+                self.change()
+    def change(self):
+        self.manager.current = 'scr 7'
 
 
-class FilePath_Researcher(Screen):
-    def change(self,name):
-        self.manager.current = name
-    def selected(self,filename):
-        FileSelection.filename = filename[0]
-        print(filename)
-
-
+#This calss is for citizen login
 class FileSelection(Screen):
     filename = StringProperty()
     result1 = StringProperty()
@@ -59,7 +73,7 @@ class FileSelection(Screen):
             Login.gettoast("Please Select a file")
         else:
             global peak_area, peak_height, abs_peak_height
-            file = open("excitation.txt","r")
+            file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
             file.close()
@@ -87,23 +101,7 @@ class FileSelection(Screen):
     def getContents(self):
         Plot.filename = self.filename
 
-class Results(Screen):
-    abs_peak = StringProperty()
-    p_height = StringProperty()
-    p_area = StringProperty()
-    def result(self):
-        FileSelection.result1 = self.p_height
-        FileSelection.result2 = self.p_area
-        FileSelection.result3 = self.abs_peak
-        print(self.p_height)
-        print(self.p_area)
-        print(self.abs_peak)
-
-
-class ContentNavigationDrawer(BoxLayout):
-    screen_manager = ObjectProperty()
-    nav_drawer = ObjectProperty()   
-
+#This class is for researcher login
 class Researcher(Screen):
     filename = StringProperty()
 
@@ -111,13 +109,14 @@ class Researcher(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
-            file = open("excitation.txt","r")
+            file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
             file.close()
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
             self.change('scr 4')
+
     def parameter(self,amp,freq,stable,record,v1,v2,v3,a,b,c):
         result = ext.temp_call(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3))
         result2 = result[0]
@@ -135,31 +134,38 @@ class Researcher(Screen):
     def getContents(self):
         Plot.filename = self.filename
 
-class Login(Screen):
+#This class is to show results from either of the login depending on the states
+class Results(Screen):
+    abs_peak = StringProperty()
+    p_height = StringProperty()
+    p_area = StringProperty()
+    def result(self):
+        FileSelection.result1 = self.p_height
+        FileSelection.result2 = self.p_area
+        FileSelection.result3 = self.abs_peak
+        print(self.p_height)
+        print(self.p_area)
+        print(self.abs_peak)
 
-    def gettoast(StringProperty):
-        toast(StringProperty)
+class ContentNavigationDrawer(BoxLayout):
+    screen_manager = ObjectProperty()
+    nav_drawer = ObjectProperty()   
 
-    def check(self, username, password):
-        connect = mysql.connector.connect(**config)
-        cursor = connect.cursor()
-        username1 = (username,)
-        id_query = "SELECT id FROM user_login WHERE id = %s"
-        cursor.execute(id_query,username1)
-        id = cursor.fetchall()
-        if not id:
-            Login.gettoast("Invalid Username")
-        else:
-            password = (str(username),password)
-            password_query = "SELECT password FROM user_login WHERE id = %s AND password = %s"
-            cursor.execute(password_query,(password))
-            password = cursor.fetchall()
-            if not password:
-                Login.gettoast("Invalid password")
-            else:
-                self.change()
-    def change(self):
-        self.manager.current = 'scr 7'
+
+class FilePath(Screen):
+    def change(self,name):
+        self.manager.current = name
+    def selected(self,filename):
+        FileSelection.filename = filename[0]
+        print(filename)
+
+
+class FilePath_Researcher(Screen):
+    def change(self,name):
+        self.manager.current = name
+    def selected(self,filename):
+        FileSelection.filename = filename[0]
+        print(filename)
 
 
 class Plot(Screen):
