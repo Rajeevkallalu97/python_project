@@ -29,6 +29,7 @@ config = {
 peak_area = "Something went wrong please try again"
 peak_height = "Something went wrong please try again"
 abs_peak_height = "Something went wrong please try again"
+calib_text = "No Results to show"
 
 class ScreenManagement(ScreenManager):
     pass
@@ -70,7 +71,7 @@ class Citizen(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
-            global peak_area, peak_height, abs_peak_height
+            global peak_area, peak_height, abs_peak_height, calib_text
             file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
@@ -88,7 +89,11 @@ class Citizen(Screen):
             val1 = 2-4*a*(c-value)
             conc = (-b+math.sqrt(b ** val1))/(2*a)
             if conc > (-b/2*a)*0.85:
+                calib_text = "High concentration, out of calibration range"
                 print("High concentration, out of calibration range")
+            else:
+                calib_text = "Calibration range normal"
+                print("Calibration range normal")
             self.change('scr 4')
 
     def change(self,name):
@@ -135,6 +140,7 @@ class Results(Screen):
         self.ids.area.text = peak_area
         self.ids.height.text = peak_height
         self.ids.abs.text = abs_peak_height
+        self.ids.calib.text = calib_text
     
 
 class ContentNavigationDrawer(BoxLayout):
