@@ -26,9 +26,9 @@ config = {
   'raise_on_warnings': True
 }
 
-peak_area = "Please click get results to load"
-peak_height = "Please click get results to load"
-abs_peak_height = "Please click get results to load"
+peak_area = "Something went wrong please try again"
+peak_height = "Something went wrong please try again"
+abs_peak_height = "Something went wrong please try again"
 
 class ScreenManagement(ScreenManager):
     pass
@@ -77,8 +77,9 @@ class Citizen(Screen):
             file.close()
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
-            peak_area = str(result[0])
-            print(self.test)
+            peak_area = str(result[1])
+            peak_height = str(result[0])
+            abs_peak_height = str(result[2])
             #Checking claibration
             a = float(fields[7])
             b = float(fields[8])
@@ -131,7 +132,9 @@ class Researcher(Screen):
 #This class is to show results from either of the login depending on the states
 class Results(Screen):
     def get(self):
-        self.ids.test.text = peak_area
+        self.ids.area.text = peak_area
+        self.ids.height.text = peak_height
+        self.ids.abs.text = abs_peak_height
     
 
 class ContentNavigationDrawer(BoxLayout):
@@ -172,7 +175,6 @@ class Plot(Screen):
             self.harmonic = 0
 
 class piSO2(MDApp):
-
     def build(self):
         self.theme_cls.primary_palette = "Gray"
         return Builder.load_file("main_design.kv")

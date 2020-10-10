@@ -77,9 +77,48 @@ Screen:
                 nav_drawer: nav_drawer
 <Results>:
     MDLabel:
-        id: test
-        text: "Test"
-        halign: "center"
+        text: "Results"
+        halign: 'center'
+        font_size: 150
+        pos_hint: {'center_x': .5, 'center_y': .75}
+    MDLabel:
+        text: "Peak Area = "
+        halign: 'center'
+        pos_hint: {'center_x': .35, 'center_y': .6}
+    MDLabel:
+        text: "Peak Height = "
+        halign: 'center'
+        pos_hint: {'center_x': .34, 'center_y': .5}
+    MDLabel:
+        text: "Absolute Peak Height = "
+        halign: 'center'
+        pos_hint: {'center_x': .3, 'center_y': .4}
+    MDLabel:
+        id: area
+        text: "Please click on Get Results button"
+        theme_text_color: "Custom"
+        text_color: 1, 0.8, 0, 1
+        halign: 'center'
+        pos_hint: {'center_x': .6, 'center_y': .6}
+    MDLabel:
+        id: height
+        text: "Please click on Get Results button"
+        theme_text_color: "Custom"
+        text_color: 1, 0.8, 0, 1
+        halign: 'center'
+        pos_hint: {'center_x': .6, 'center_y': .5}
+    MDLabel:
+        id: abs
+        text: "Please click on Get Results button"
+        theme_text_color: "Custom"
+        text_color: 1, 0.8, 0, 1
+        halign: 'center'
+        pos_hint: {'center_x': .6, 'center_y': .4}
+    MDLabel:
+        id: calib
+        text: "asdasd"
+        halign: 'center'
+        pos_hint: {'center_x': .4, 'center_y': .2}
     MDFlatButton:
         text: "Get Results"
         pos_hint: {'center_x': .5, 'center_y': .3}
