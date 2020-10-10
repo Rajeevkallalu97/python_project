@@ -26,9 +26,9 @@ config = {
   'raise_on_warnings': True
 }
 
-peak_area = 0.0
-peak_height = 0.0
-abs_peak_height = 0.0
+peak_area = "Please click get results to load"
+peak_height = "Please click get results to load"
+abs_peak_height = "Please click get results to load"
 
 class ScreenManagement(ScreenManager):
     pass
@@ -63,11 +63,9 @@ class Login(Screen):
 
 
 #This calss is for citizen login
-class FileSelection(Screen):
+class Citizen(Screen):
     filename = StringProperty()
-    result1 = StringProperty()
-    result2 = StringProperty()
-    result3 = StringProperty()
+    test = ""
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -79,13 +77,9 @@ class FileSelection(Screen):
             file.close()
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]))
-            self.result1 = str(result[0])
-            self.result2 = str(result[1])
-            self.result3 = str(result[2])
-            Results.p_area = self.result2
-            Results.p_height = self.result1
-            Results.abs_peak = self.result3
-            print(peak_area)
+            peak_area = str(result[0])
+            print(self.test)
+            #Checking claibration
             a = float(fields[7])
             b = float(fields[8])
             c = float(fields[9])
@@ -136,27 +130,20 @@ class Researcher(Screen):
 
 #This class is to show results from either of the login depending on the states
 class Results(Screen):
-    abs_peak = StringProperty()
-    p_height = StringProperty()
-    p_area = StringProperty()
-    def result(self):
-        FileSelection.result1 = self.p_height
-        FileSelection.result2 = self.p_area
-        FileSelection.result3 = self.abs_peak
-        print(self.p_height)
-        print(self.p_area)
-        print(self.abs_peak)
+    def get(self):
+        self.ids.test.text = peak_area
+    
 
 class ContentNavigationDrawer(BoxLayout):
     screen_manager = ObjectProperty()
     nav_drawer = ObjectProperty()   
 
 
-class FilePath(Screen):
+class FilePath_Citizen(Screen):
     def change(self,name):
         self.manager.current = name
     def selected(self,filename):
-        FileSelection.filename = filename[0]
+        Citizen.filename = filename[0]
         print(filename)
 
 
@@ -164,7 +151,7 @@ class FilePath_Researcher(Screen):
     def change(self,name):
         self.manager.current = name
     def selected(self,filename):
-        FileSelection.filename = filename[0]
+        Citizen.filename = filename[0]
         print(filename)
 
 
