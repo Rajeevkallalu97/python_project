@@ -54,11 +54,10 @@ v3 = 0.7 #Recording stop "Voltage" actually a fraction of max output 1.0 = ~1.26
 filename_string = ""
 filename = ""
 filename_data = ""
-binary_flag = 0
 
 
-def temp_call_citizen(stable_fn, sample_rate_fn, v1_fn, v2_fn, v3_fn, frequency_fn, duration_fn, binary_flag_fn):
-    global  stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data, binary_flag
+def temp_call_citizen(stable_fn, sample_rate_fn, v1_fn, v2_fn, v3_fn, frequency_fn, duration_fn):
+    global  stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data
     stable = stable_fn
     sample_rate = sample_rate_fn
     frequency = frequency_fn
@@ -66,17 +65,16 @@ def temp_call_citizen(stable_fn, sample_rate_fn, v1_fn, v2_fn, v3_fn, frequency_
     v1 = v1_fn
     v2 = v2_fn
     v3 = v3_fn
-    binary_flag = binary_flag_fn
     filename_string = str('50ppm_'+ '_Amp_'+ str(amplitude) + '_stable_' +str(stable) + 'recording_'+ str(duration)+ '_freq_' + '_v1_'+ str(v1) + '_v2_' + str(v2) +'_v3_' +str(v3))#file identifier in quotes
     filename = str(newpath+'/' +filename_string + '_'+ date + '.wav') 
     filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
     wine = '300ppm_s3_run1'
-    excitation(stable,0.06, sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data, binary_flag)
+    excitation(stable,0.06, sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data)
     result = analysis(filename_data,wine) #uncomment to perform analysis as well as recording the potential
     return result
 
-def temp_call_researcher(stable_func, sample_rate_func, v1_func, v2_func, v3_func, frequency_func, duration_func, binary_flag_func):
-    global  stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data, binary_flag
+def temp_call_researcher(stable_func, sample_rate_func, v1_func, v2_func, v3_func, frequency_func, duration_func):
+    global  stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data
     stable = stable_func
     sample_rate = sample_rate_func
     frequency = frequency_func
@@ -84,17 +82,17 @@ def temp_call_researcher(stable_func, sample_rate_func, v1_func, v2_func, v3_fun
     v1 = v1_func
     v2 = v2_func
     v3 = v3_func
-    binary_flag = binary_flag_func
+   
     filename_string = str('50ppm_'+ '_Amp_'+ str(amplitude) + '_stable_' +str(stable) + 'recording_'+ str(duration)+ '_freq_' + '_v1_'+ str(v1) + '_v2_' + str(v2) +'_v3_' +str(v3))#file identifier in quotes
     filename = str(newpath+'/' +filename_string + '_'+ date + '.wav') 
     filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
     wine = '300ppm_s3_run1'
-    excitation(stable,0.06, sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data, binary_flag)
+    excitation(stable,0.06, sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data)
     result = analysis(filename_data,wine) #uncomment to perform analysis as well as recording the potential
     return result
 
-def temp_call_researcher_amp(stable_fun,amplitude_fun, sample_rate_fun, duration_fun, frequency_fun,v1_fun, v2_fun, v3_fun, binary_flag_fun):
-    global amplitude, stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data, binary_flag
+def temp_call_researcher_amp(stable_fun,amplitude_fun, sample_rate_fun, duration_fun, frequency_fun,v1_fun, v2_fun, v3_fun):
+    global amplitude, stable, sample_rate, duration, frequency, v1, v2, v3, filename_string, filename, filename_data
     amplitude = amplitude_fun
     stable = stable_fun
     sample_rate = sample_rate_fun
@@ -103,13 +101,13 @@ def temp_call_researcher_amp(stable_fun,amplitude_fun, sample_rate_fun, duration
     v1 = v1_fun
     v2 = v2_fun
     v3 = v3_fun
-    binary_flag = binary_flag_fun
+   
     filename_string = str('50ppm_'+ '_Amp_'+ str(amplitude) + '_stable_' +str(stable) + 'recording_'+ str(duration)+ '_freq_' + '_v1_'+ str(v1) + '_v2_' + str(v2) +'_v3_' +str(v3))#file identifier in quotes
     filename = str(newpath+'/' +filename_string + '_'+ date + '.wav') 
     filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
     wine = '300ppm_s3_run1'
 
-    excitation(stable, amplitude,sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data, binary_flag)
+    excitation(stable, amplitude,sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data)
     result = analysis(filename_data,wine) #uncomment to perform analysis as well as recording the potential
     return result
 
@@ -117,7 +115,7 @@ def temp_call_researcher_amp(stable_fun,amplitude_fun, sample_rate_fun, duration
 
 
 ########################################################################
-def excitation(stable, amplitude1,sample_rate, v1, v2, v3, frequency, duration, filename,filename_string, filename_data, binary_flag):
+def excitation(stable, amplitude1,sample_rate, v1, v2, v3, frequency, duration, filename,filename_string, filename_data):
 
     global amplitude
     stable = float(stable)

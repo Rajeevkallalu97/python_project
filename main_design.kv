@@ -166,16 +166,6 @@ Screen:
         on_release: 
             root.getContents()
             root.transition()
-    MDLabel:
-        text: "Save to binary"
-        halign: 'center'
-        pos_hint: {'center_x': 0.75, 'center_y': 0.5}
-    MDCheckbox: 
-        selected_color: 1, 0.8, 0, 1
-        pos_hint: {'center_x': .67, 'center_y': .5}
-        on_active: root.on_checkbox_active(*args)
-        size_hint: None, None
-        size: "48dp", "48dp"
 
 
 <Plot>:

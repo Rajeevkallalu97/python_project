@@ -68,12 +68,6 @@ class Login(Screen):
 #This calss is for citizen login
 class Citizen(Screen):
     filename = StringProperty()
-    binary_flag = 0
-    def on_checkbox_active(self, checkbox, value):
-        if value:
-            binary_flag = 1
-        else:
-            binary_flag = 0
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -85,7 +79,7 @@ class Citizen(Screen):
             file.close()
             #Parameters of files are as stable_duration, sample rate, v1, v2, v3, frequency, duration, abc constants
             result = ext.temp_call_citizen(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]),self.binary_flag)
+            float(fields[4]),float(fields[5]),float(fields[6]))
             peak_area = str(result[1])
             peak_height = str(result[0])
             abs_peak_height = str(result[2])
@@ -112,12 +106,6 @@ class Citizen(Screen):
 #This class is for researcher login
 class Researcher(Screen):
     filename = StringProperty()
-    binary_flag = 0
-    def on_checkbox_active(self, checkbox, value):
-        if value:
-            binary_flag = 1
-        else:
-            binary_flag = 0
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -128,7 +116,7 @@ class Researcher(Screen):
                 fields = line.split(",")
             file.close()
             result = ext.temp_call_researcher(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]),self.binary_flag)
+            float(fields[4]),float(fields[5]),float(fields[6]))
             peak_area = str(result[1])
             peak_height = str(result[0])
             abs_peak_height = str(result[2])
@@ -150,14 +138,9 @@ class Researcher(Screen):
     def parameter(self,amplititude,sample,freq,stable,record,v1,v2,v3,a,b,c):
         #print("ampli",amplititude,"ssample",sample,"freq",freq,"record",record,"v1",v1,v2,v3,a,b,c)
         global peak_area, peak_height, abs_peak_height, calib_text
-        binary_flag = 0
-        def on_checkbox_active(self, checkbox, value):
-            if value:
-                binary_flag = 1
-            else:
-                binary_flag = 0
+        
         #Parameters of files are as stable_duration, sample rate, v1, v2, v3, frequency, duration, abc constants
-        result = ext.temp_call_researcher_amp(float(stable),float(amplititude),int(sample),float(record),float(freq),float(v1),float(v2),float(v3),self.binary_flag)
+        result = ext.temp_call_researcher_amp(float(stable),float(amplititude),int(sample),float(record),float(freq),float(v1),float(v2),float(v3))
         #result = ext.temp_call_researcher_amp(float(2),float(0.06),int(44100),float(9),float(300),float(1),float(1),float(1),self.binary_flag)
         peak_area = str(result[1])
         peak_height = str(result[0])
