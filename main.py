@@ -68,15 +68,12 @@ class Login(Screen):
 #This calss is for citizen login
 class Citizen(Screen):
     filename = StringProperty()
-    test = ""
     binary_flag = 0
     def on_checkbox_active(self, checkbox, value):
         if value:
             binary_flag = 1
-            print('The checkbox', checkbox, 'is active', 'and', checkbox.state, 'state',binary_flag)
         else:
             binary_flag = 0
-            print('The checkbox', checkbox, 'is inactive', 'and', checkbox.state, 'state',binary_flag)
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -86,7 +83,8 @@ class Citizen(Screen):
             for line in file:
                 fields = line.split(",")
             file.close()
-            result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            #Parameters of files are as stable_duration, sample rate, v1, v2, v3, frequency, duration, abc constants
+            result = ext.temp_call_citizen(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
             float(fields[4]),float(fields[5]),float(fields[6]),self.binary_flag)
             peak_area = str(result[1])
             peak_height = str(result[0])
@@ -114,22 +112,57 @@ class Citizen(Screen):
 #This class is for researcher login
 class Researcher(Screen):
     filename = StringProperty()
-
+    binary_flag = 0
+    def on_checkbox_active(self, checkbox, value):
+        if value:
+            binary_flag = 1
+        else:
+            binary_flag = 0
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
+            global peak_area, peak_height, abs_peak_height, calib_text
             file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
             file.close()
-            result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]))
+            result = ext.temp_call_researcher(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
+            float(fields[4]),float(fields[5]),float(fields[6]),self.binary_flag)
+            peak_area = str(result[1])
+            peak_height = str(result[0])
+            abs_peak_height = str(result[2])
+            #Checking claibration
+            a = float(fields[7])
+            b = float(fields[8])
+            c = float(fields[9])
+            value = result[0]
+            val1 = 2-4*a*(c-value)
+            conc = (-b+math.sqrt(b ** val1))/(2*a)
+            if conc > (-b/2*a)*0.85:
+                calib_text = "High concentration, out of calibration range"
+                print("High concentration, out of calibration range")
+            else:
+                calib_text = "Calibration range normal"
+                print("Calibration range normal")
             self.change('scr 4')
 
-    def parameter(self,amp,freq,stable,record,v1,v2,v3,a,b,c):
-        result = ext.temp_call(float(stable),44100,float(record),float(freq),float(v1),float(v2),float(v3))
-        result2 = result[0]
+    def parameter(self,amplititude,sample,freq,stable,record,v1,v2,v3,a,b,c):
+        #print("ampli",amplititude,"ssample",sample,"freq",freq,"record",record,"v1",v1,v2,v3,a,b,c)
+        global peak_area, peak_height, abs_peak_height, calib_text
+        binary_flag = 0
+        def on_checkbox_active(self, checkbox, value):
+            if value:
+                binary_flag = 1
+            else:
+                binary_flag = 0
+        #Parameters of files are as stable_duration, sample rate, v1, v2, v3, frequency, duration, abc constants
+        result = ext.temp_call_researcher_amp(float(stable),float(amplititude),int(sample),float(record),float(freq),float(v1),float(v2),float(v3),self.binary_flag)
+        #result = ext.temp_call_researcher_amp(float(2),float(0.06),int(44100),float(9),float(300),float(1),float(1),float(1),self.binary_flag)
+        peak_area = str(result[1])
+        peak_height = str(result[0])
+        abs_peak_height = str(result[2])
+        #Checking claibration
         a = float(a)
         b = float(b)
         c = float(c)
@@ -137,7 +170,11 @@ class Researcher(Screen):
         val1 = 2-4*a*(c-value)
         conc = (-b+math.sqrt(b ** val1))/(2*a)
         if conc > (-b/2*a)*0.85:
-            print("High concentration, out of calibration range")
+                calib_text = "High concentration, out of calibration range"
+                print("High concentration, out of calibration range")
+        else:
+            calib_text = "Calibration range normal"
+            print("Calibration range normal")
         self.change('scr 4')
     def change(self,name):
         self.manager.current = name
@@ -176,7 +213,7 @@ class FilePath_Researcher(Screen):
     def change(self,name):
         self.manager.current = name
     def selected(self,filename):
-        Citizen.filename = filename[0]
+        Researcher.filename = filename[0]
         print(filename)
 
 

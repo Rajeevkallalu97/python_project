@@ -230,25 +230,20 @@ Screen:
             
 
 <Researcher>:
-    MDLabel:
-        text: "Welcome"+" "
-        font_size: '30sp'
-        pos_hint: {'center_x': 0.5, 'center_y': 0.83}
-        halign: "center" 
     
     MDLabel:
         text: "Select The File"
         halign: 'center'
-        pos_hint: {'center_x': 0.5, 'center_y': 0.78}
+        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
         
     MDRoundFlatIconButton:
         text: "Open manager"
         icon: "folder"
-        pos_hint: {'center_x': .5, 'center_y': .68}
-        on_release: root.change('file')
+        pos_hint: {'center_x': .5, 'center_y': .72}
+        on_release: root.change('file_Researcher')
     MDFlatButton:
         text: "Upload & Start"
-        pos_hint: {'center_x': .5, 'center_y': .6}
+        pos_hint: {'center_x': .5, 'center_y': .65}
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release: 
@@ -305,27 +300,17 @@ Screen:
         pos_hint: {'center_x': 0.55, 'center_y': 0.45}
         hint_text: "Dur "
     MDLabel:
-        text: "Harmonic:"
+        text: "Sampling Rate:"
         halign: 'center'
         pos_hint: {'center_x': 0.7, 'center_y': 0.5}
     MDTextFieldRect:
-        id: harmonic
+        id: Sampling
         size_hint: 0.1, None
         height: "30dp"
         halign: 'center'
         pos_hint: {'center_x': 0.70, 'center_y': 0.45}
-        hint_text: "1-6 "
+        hint_text: "44100 "
 
-    #MDLabel:
-        #text: "Method:"
-        #halign: 'center'
-        #pos_hint: {'center_x': 0.85, 'center_y': 0.5}
-    #MDTextFieldRect:
-        #size_hint: 0.1, None
-        #height: "30dp"
-        #halign: 'center'
-        #pos_hint: {'center_x': 0.85, 'center_y': 0.45}
-        #hint_text: "height "
     
     MDLabel:
         text: "V's:"
@@ -386,7 +371,7 @@ Screen:
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release:
-            root.parameter(amplititude.text,frequency.text,stable.text,record.text,
+            root.parameter(amplititude.text,Sampling.text,frequency.text,stable.text,record.text,
             v1.text,v2.text,v3.text,a.text,b.text,c.text)
 
 
