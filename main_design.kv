@@ -34,24 +34,9 @@ Screen:
             Plot:
                 name: "scr 2"
                 
-            Screen:
-                name: "scr 3"
-
-                MDLabel:
-                    text: "Screen for showing saved data"
-                    halign: "center"    
-
             Results:
                 id: result
                 name: "scr 4"
-
-
-            Screen:
-                name: "scr 5"
-
-                MDLabel:
-                    text: "Screen for file options"
-                    halign: "center"
             
             Researcher:
                 name: "scr 7"
@@ -63,6 +48,10 @@ Screen:
 
             FilePath_Citizen:
                 name: "file"
+            
+            FilePath_Plot:
+                name: "file_plot"
+
 
             FilePath_Researcher:
                 name: "file_Researcher"    
@@ -138,6 +127,15 @@ Screen:
             root.selected(filechooser.selection)
             root.manager.transition.direction = 'right'
             root.change('scr 1')
+<FilePath_Plot>:
+    FileChooserIconView:
+        id:filechooser
+        size_hint: 0.9,0.9
+        path: "./"
+        on_selection:
+            root.selected(filechooser.selection)
+            root.manager.transition.direction = 'right'
+            root.change('scr 2')
 
 <FilePath_Researcher>:
     FileChooserIconView:
@@ -161,52 +159,74 @@ Screen:
         pos_hint: {'center_x': .5, 'center_y': .6}
         on_release: root.change('file')
     MDFlatButton:
-        text: "Upload & Start"
+        text: "Plot Graphs"
         pos_hint: {'center_x': .5, 'center_y': .5}
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release: 
             root.getContents()
             root.transition()
+    MDLabel:
+        text: "Save to binary"
+        halign: 'center'
+        pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+    MDCheckbox: 
+        selected_color: 1, 0.8, 0, 1
+        pos_hint: {'center_x': .67, 'center_y': .5}
+        on_active: root.on_checkbox_active(*args)
+        size_hint: None, None
+        size: "48dp", "48dp"
 
 
 <Plot>:
     MDLabel:
-        text: "Please Select an Option to Plot"
+        text: "Please Select Options to Plot"
         font_size: '30sp'
         pos_hint: {'center_x': 0.5, 'center_y': 0.8}
         halign: "center" 
-    MDLabel:
-        id: "path_label"
-        text: root.path
-        theme_text_color: "Custom"
-        text_color: 1, 0.8, 0, 1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.72}
-        halign: "center" 
-    MDFlatButton:
-        text: "Plot current vs time"
-        pos_hint: {'center_x': .2, 'center_y': .6}
-        md_bg_color: app.theme_cls.primary_color
-        elevation_normal: 12
-        on_release: 
-            root.current = 1
-            root.plot()
-    MDFlatButton:
-        text: "Plot current vs time modified"
+    MDRoundFlatIconButton:
+        text: "Open manager"
+        icon: "folder"
         pos_hint: {'center_x': .5, 'center_y': .6}
-        md_bg_color: app.theme_cls.primary_color
-        elevation_normal: 12
-        on_release: 
-            root.current_modified = 1
-            root.plot()
+        on_release: root.change('file_plot')
     MDFlatButton:
-        text: "Plot Harmonic"
-        pos_hint: {'center_x': .8, 'center_y': .6}
+        text: "Plot Graphs"
+        pos_hint: {'center_x': .5, 'center_y': .5}
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release: 
-            root.harmonic = 1
+            root.getContents()
             root.plot()
+    MDLabel:
+        text: "Current"
+        halign: 'center'
+        pos_hint: {'center_x': 0.25, 'center_y': 0.7}
+    MDCheckbox: 
+        selected_color: 1, 0.8, 0, 1
+        pos_hint: {'center_x': .2, 'center_y': .7}
+        on_active: root.on_checkbox1_active(*args)
+        size_hint: None, None
+        size: "48dp", "48dp"
+    MDLabel:
+        text: "Current_modified"
+        halign: 'center'
+        pos_hint: {'center_x': 0.54, 'center_y': 0.7}
+    MDCheckbox: 
+        selected_color: 1, 0.8, 0, 1
+        pos_hint: {'center_x': .45, 'center_y': .7}
+        on_active: root.on_checkbox2_active(*args)
+        size_hint: None, None
+        size: "48dp", "48dp"
+    MDLabel:
+        text: "Harmonic"
+        halign: 'center'
+        pos_hint: {'center_x': 0.76, 'center_y': 0.7}
+    MDCheckbox: 
+        selected_color: 1, 0.8, 0, 1
+        pos_hint: {'center_x': .7, 'center_y': .7}
+        on_active: root.on_checkbox3_active(*args)
+        size_hint: None, None
+        size: "48dp", "48dp"
             
 
 <Researcher>:

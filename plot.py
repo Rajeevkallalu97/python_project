@@ -3,6 +3,7 @@ import scipy
 from scipy import signal
 import matplotlib.pyplot as plt
 import struct
+import pandas as pd
 
 
 		
@@ -16,6 +17,12 @@ def withFile(filename,current,current_modified,harmonic):
 		for i in f.readlines():
 			i = i.split(' ')
 			inp.append([int(i[0]), int(i[1])])
+	# colnames = ['x','y']
+	# data = pd.read_csv(filename, sep=',',names=colnames, skiprows=1) # x is time, y is potential
+	# data['x'] = data['x'].astype(int)
+	# data['y'] = data['y'].astype(int)
+	# inp.append([data['x'],data['y']])
+	
 
 	inp = np.array(inp)
 
@@ -158,3 +165,5 @@ def harmonic_plot(ienv,nod,t,f,ifilt,Imagfilt,int_ienv,i,imag):
 	axes[5].plot(t[:nod],int_ienv[:nod])
 	plt.subplot_tool()
 	plt.show()
+
+#withFile("/Users/sairajeevkallalu/Desktop/assignments/latrobe/project 3A/screens/data/Raw_data.data",1,1,1)

@@ -13,10 +13,12 @@ from kivy_garden.graph import Graph, MeshLinePlot
 from math import sin
 import mysql.connector
 from mysql.connector import errorcode
+from kivy.uix.checkbox import CheckBox
 import matplotlib.pyplot as plt
 import os
 import plot as p 
 import excitation as ext
+
 
 config = {
   'user': 'root',
@@ -67,6 +69,14 @@ class Login(Screen):
 class Citizen(Screen):
     filename = StringProperty()
     test = ""
+    binary_flag = 0
+    def on_checkbox_active(self, checkbox, value):
+        if value:
+            binary_flag = 1
+            print('The checkbox', checkbox, 'is active', 'and', checkbox.state, 'state',binary_flag)
+        else:
+            binary_flag = 0
+            print('The checkbox', checkbox, 'is inactive', 'and', checkbox.state, 'state',binary_flag)
     def transition(self):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
@@ -77,7 +87,7 @@ class Citizen(Screen):
                 fields = line.split(",")
             file.close()
             result = ext.temp_call(float(fields[0]),int(fields[1]),float(fields[2]),float(fields[3]),
-            float(fields[4]),float(fields[5]),float(fields[6]))
+            float(fields[4]),float(fields[5]),float(fields[6]),self.binary_flag)
             peak_area = str(result[1])
             peak_height = str(result[0])
             abs_peak_height = str(result[2])
@@ -155,6 +165,12 @@ class FilePath_Citizen(Screen):
         Citizen.filename = filename[0]
         print(filename)
 
+class FilePath_Plot(Screen):
+    def change(self,name):
+        self.manager.current = name
+    def selected(self,filename):
+        Plot.filename = filename[0]
+        print(filename)
 
 class FilePath_Researcher(Screen):
     def change(self,name):
@@ -166,19 +182,37 @@ class FilePath_Researcher(Screen):
 
 class Plot(Screen):
     filename = StringProperty()
-    path = StringProperty('Data Taken From')
     current = 0
     current_modified = 0
     harmonic = 0
+    def on_checkbox1_active(self, checkbox, value):
+        if value:
+           self.current = 1
+        else:
+           self.current = 0
+    def on_checkbox2_active(self, checkbox, value):
+        if value:
+            self.current_modified = 1
+        else:
+            self.current_modified = 0
+    def on_checkbox3_active(self, checkbox, value):
+        if value:
+            self.harmonic = 1
+        else:
+            self.harmonic = 0
     def plot(self):
         if not self.filename:
             Login.gettoast("Please Select a File")
         else:
-            self.path = self.filename
             p.withFile(self.filename,self.current,self.current_modified,self.harmonic)
             self.current = 0
             self.current_modified = 0
             self.harmonic = 0
+    def change(self,name):
+        self.manager.current = name
+    def getContents(self):
+        Plot.filename = self.filename
+
 
 class piSO2(MDApp):
     def build(self):

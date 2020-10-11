@@ -37,12 +37,10 @@ if not os.path.exists(newpath):
     os.makedirs(newpath)
     
 
-file = open("excitation.txt","r")
-for line in file:
-  fields = line.split(",")
-file.close()
 
 ################## Settings - Change as you like #######################
+#These values are called in temp_call function, while calling the function 
+#if any null value is passed default value will be used
 harmonic = 2
 amplitude = 0.06 # This is as a fraction of the maximum amplitude 1 = 2.96 V 
 stable = 2.0 #stable duration in seconds
@@ -52,17 +50,22 @@ frequency = 115.0 # Frequency
 v1 = 0.0 #Stable "Voltage" actually a fraction of max output positive values only 
 v2 = 0.0 #Recording Start "Voltage" actually a fraction of max output 0.1 = ~0.045V
 v3 = 0.7 #Recording stop "Voltage" actually a fraction of max output 1.0 = ~1.265
-filename_string = str('50ppm_'+ '_Amp_'+ str(amplitude) + '_stable_' +str(stable) + 'recording_'+ str(duration)+ '_freq_' + '_v1_'+ str(v1) + '_v2_' + str(v2) +'_v3_' +str(v3))#file identifier in quotes
-filename = str(newpath+'/' +filename_string + '_'+ date + '.wav') 
-filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
-wine = '300ppm_s3_run1'
+filename_string = ""
+filename = ""
+filename_data = ""
 
-def temp_call(stable, sample_rate, v1, v2, v3, frequency, duration):
-    excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename)
-    result = analysis(filename_data) #uncomment to perform analysis as well as recording the potential
+
+def temp_call(stable, sample_rate, v1, v2, v3, frequency, duration, binary_flag):
+    global filename_string, filename, filename_data
+    filename_string = str('50ppm_'+ '_Amp_'+ str(amplitude) + '_stable_' +str(stable) + 'recording_'+ str(duration)+ '_freq_' + '_v1_'+ str(v1) + '_v2_' + str(v2) +'_v3_' +str(v3))#file identifier in quotes
+    filename = str(newpath+'/' +filename_string + '_'+ date + '.wav') 
+    filename_data = str(newpath+'/' +filename_string + '_'+ date + '.data') 
+    wine = '300ppm_s3_run1'
+    excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename, filename_string, filename_data, binary_flag)
+    result = analysis(filename_data,wine) #uncomment to perform analysis as well as recording the potential
     return result
 ########################################################################
-def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename):
+def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename,filename_string, filename_data, binary_flag):
 
     startTime = datetime.now()
     print('Generating waveforms...')
@@ -116,28 +119,24 @@ def excitation(stable, sample_rate, v1, v2, v3, frequency, duration, filename):
     
     excitation_data = str(str(stable) + ',' +  str(sample_rate) + ',' + str(v1) +','+ str(v2) +','+ str(v3) +','+ str(frequency) +','+ str(duration) +','+ str(filename))
     np.savetxt(filename_data, rec_data, delimiter=',' , header=excitation_data)
-    
-    
+        
+    #Microphone input graph
     fig, axs = plt.subplots(2)
     axs[0].plot(total_waveform)
     axs[0].set_title('Output Waveform')
     axs[1].plot(rec_data)
     axs[1].set_title('Microphone input')
-    
-    
-    
     plt.plot(rec_data)
-    
-    
     plt.show()
+
+
     print('Writing data complete')
-    
     print('Process completed in '+ str(datetime.now() - startTime))
     
 
 
 
-def analysis(filename):
+def analysis(filename,wine):
     
     path = os.getcwd()
     newpath = str(path) + '/' + 'Electrobe_output_'+ str(datetime.now().strftime("%d_%m_%Y"))
@@ -147,7 +146,6 @@ def analysis(filename):
     file = ntpath.basename(filename)
     colnames = ['x','y']
     data = pd.read_csv(filename, sep=',',names=colnames, skiprows=1) # x is time, y is potential
-    
     y = data['x']
     
     
@@ -172,7 +170,7 @@ def analysis(filename):
     frq = frq[range(n2//2)] # one side frequency range
     Y = np.fft.fft(y)/n2 # fft computing and normalization
     Y = Y[range(n2//2)]
-    fig,myplot = plt.subplots(4, 1)
+    fig,myplot = plt.subplots(2, 1)
     
     myplot[0].plot(t,y)
     myplot[0].set_xlabel('Time')
@@ -239,7 +237,7 @@ def analysis(filename):
     #myplot[3].set_title('Upper Envelope')
     #myplot[3].set_ylim(0,(max(s[low_idx])*1.05))
     #myplot[3].set_xlabel('Time [seconds]')
-    plt.tight_layout()
+    #plt.tight_layout()
     fig.savefig(newpath+'/'+date_time+'_plot_1.png')
     #plt.show()
     
@@ -296,7 +294,7 @@ def analysis(filename):
     ax.set_xlim(0, 10)
     ax.set_ylim(0, (max(y)*1.1))
     fig.savefig(newpath+'/'+date_time+ '_'+ wine +'_plot_2.png')
-    #plt.show()
+    plt.show()
     
     x1 = x[index_x_min:index_x_max]
     y1 = y[index_x_min:index_x_max]
@@ -340,3 +338,4 @@ def analysis(filename):
     
 
 
+#analysis("/Users/sairajeevkallalu/Desktop/assignments/latrobe/project 3A/screens/Electrobe_output_11_10_2020/50ppm__Amp_0.06_stable_2.0recording_5.0_freq__v1_0.1_v2_0.2_v3_0.7_11-10-2020_01-10_am.data","300ppm_s3_run1")
