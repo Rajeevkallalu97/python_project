@@ -393,6 +393,4 @@ def analysis(filename,wine):
     
     return peak_height, area_between_curves, absolute_peak
     
-
-
 #analysis("/Users/sairajeevkallalu/Desktop/assignments/latrobe/project 3A/screens/Electrobe_output_11_10_2020/50ppm__Amp_0.06_stable_2.0recording_5.0_freq__v1_0.1_v2_0.2_v3_0.7_11-10-2020_01-10_am.data","300ppm_s3_run1")

@@ -6,7 +6,6 @@ Sukhbinder
 
 Based on:
 """
-
 def _rect_inter_inner(x1,x2):
     n1=x1.shape[0]-1
     n2=x2.shape[0]-1

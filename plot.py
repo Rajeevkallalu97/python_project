@@ -4,8 +4,6 @@ from scipy import signal
 import matplotlib.pyplot as plt
 import struct
 import pandas as pd
-
-
 		
 def withFile(filename,current,current_modified,harmonic):
 	current = current
