@@ -28,11 +28,14 @@ config = {
   'raise_on_warnings': True
 }
 
-peak_area = "Something went wrong please try again"
-peak_height = "Something went wrong please try again"
-abs_peak_height = "Something went wrong please try again"
+error_text = "Something went wrong please try again"
+calib_text_high = "High concentration, out of calibration range"
+calib_text_normal = "Calibration range normal"
+peak_area = error_text
+peak_height = error_text
+abs_peak_height = error_text
 calib_text = "No Results to show"
-concentration = "Something went wrong please try again"
+concentration = error_text
 
 class ScreenManagement(ScreenManager):
     pass
@@ -66,7 +69,7 @@ class Login(Screen):
         self.manager.current = 'scr 7'
 
 
-#This calss is for citizen login
+#This class is for citizen login
 class Citizen(Screen):
     filename = StringProperty()
     def transition(self):
@@ -91,13 +94,13 @@ class Citizen(Screen):
             value = result[0]
             val1 = 2-4*a*(c-value)
             conc = (-b+math.sqrt(b ** val1))/(2*a)
-            concentration = str(conc)
+            concentration = str(conc)+" ppm Free SO2 "
             if conc > (-b/2*a)*0.85:
-                calib_text = "High concentration, out of calibration range"
-                print("High concentration, out of calibration range")
+                calib_text = calib_text_high
+                print(calib_text_high)
             else:
-                calib_text = "Calibration range normal"
-                print("Calibration range normal")
+                calib_text = calib_text_normal
+                print(calib_text_normal)
             self.change('scr 4')
 
     def change(self,name):
@@ -129,22 +132,22 @@ class Researcher(Screen):
             value = result[0]
             val1 = 2-4*a*(c-value)
             conc = (-b+math.sqrt(b ** val1))/(2*a)
-            concentration = str(conc)
+            concentration = str(conc)+" ppm Free SO2 "
             if conc > (-b/2*a)*0.85:
-                calib_text = "High concentration, out of calibration range"
-                print("High concentration, out of calibration range")
+                calib_text = calib_text_high
+                print(calib_text_high)
             else:
-                calib_text = "Calibration range normal"
-                print("Calibration range normal")
+                calib_text = calib_text_normal
+                print(calib_text_normal)
             self.change('scr 4')
 
     def parameter(self,amplititude,sample,freq,stable,record,v1,v2,v3,a,b,c):
         #print("ampli",amplititude,"ssample",sample,"freq",freq,"record",record,"v1",v1,v2,v3,a,b,c)
-        global peak_area, peak_height, abs_peak_height, calib_text
+        global peak_area, peak_height, abs_peak_height, calib_text, concentration
         
         #Parameters of files are as stable_duration, sample rate, v1, v2, v3, frequency, duration, abc constants
         result = ext.temp_call_researcher_amp(float(stable),float(amplititude),int(sample),float(record),float(freq),float(v1),float(v2),float(v3))
-        #result = ext.temp_call_researcher_amp(float(2),float(0.06),int(44100),float(9),float(300),float(1),float(1),float(1),self.binary_flag)
+       
         peak_area = str(result[1])
         peak_height = str(result[0])
         abs_peak_height = str(result[2])
@@ -155,12 +158,13 @@ class Researcher(Screen):
         value = result[0]
         val1 = 2-4*a*(c-value)
         conc = (-b+math.sqrt(b ** val1))/(2*a)
+        concentration = str(conc)+" ppm Free SO2 "
         if conc > (-b/2*a)*0.85:
-                calib_text = "High concentration, out of calibration range"
-                print("High concentration, out of calibration range")
+                calib_text = calib_text_high
+                print(calib_text_high)
         else:
-            calib_text = "Calibration range normal"
-            print("Calibration range normal")
+            calib_text = calib_text_normal
+            print(calib_text_normal)
         self.change('scr 4')
     def change(self,name):
         self.manager.current = name
