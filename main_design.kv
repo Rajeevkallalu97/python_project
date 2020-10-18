@@ -81,7 +81,11 @@ Screen:
     MDLabel:
         text: "Absolute Peak Height = "
         halign: 'center'
-        pos_hint: {'center_x': .3, 'center_y': .4}
+        pos_hint: {'center_x': .31, 'center_y': .4}
+    MDLabel:
+        text: "Concentration = "
+        halign: 'center'
+        pos_hint: {'center_x': .33, 'center_y': .3}
     MDLabel:
         id: area
         text: "Please click on Get Results button"
@@ -104,13 +108,20 @@ Screen:
         halign: 'center'
         pos_hint: {'center_x': .6, 'center_y': .4}
     MDLabel:
+        id: concentration
+        text: "Please click on Get Results button"
+        theme_text_color: "Custom"
+        text_color: 1, 0.8, 0, 1
+        halign: 'center'
+        pos_hint: {'center_x': .6, 'center_y': .3}
+    MDLabel:
         id: calib
         text: "No Results to show"
         halign: 'center'
-        pos_hint: {'center_x': .5, 'center_y': .2}
+        pos_hint: {'center_x': .5, 'center_y': .1}
     MDFlatButton:
         text: "Get Results"
-        pos_hint: {'center_x': .5, 'center_y': .3}
+        pos_hint: {'center_x': .5, 'center_y': .2}
         md_bg_color: app.theme_cls.primary_color
         elevation_normal: 12
         on_release: 

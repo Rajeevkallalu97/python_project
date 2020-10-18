@@ -32,6 +32,7 @@ peak_area = "Something went wrong please try again"
 peak_height = "Something went wrong please try again"
 abs_peak_height = "Something went wrong please try again"
 calib_text = "No Results to show"
+concentration = "Something went wrong please try again"
 
 class ScreenManagement(ScreenManager):
     pass
@@ -72,7 +73,7 @@ class Citizen(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
-            global peak_area, peak_height, abs_peak_height, calib_text
+            global peak_area, peak_height, abs_peak_height, calib_text, concentration
             file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
@@ -90,6 +91,7 @@ class Citizen(Screen):
             value = result[0]
             val1 = 2-4*a*(c-value)
             conc = (-b+math.sqrt(b ** val1))/(2*a)
+            concentration = str(conc)
             if conc > (-b/2*a)*0.85:
                 calib_text = "High concentration, out of calibration range"
                 print("High concentration, out of calibration range")
@@ -110,7 +112,7 @@ class Researcher(Screen):
         if not Plot.filename:
             Login.gettoast("Please Select a file")
         else:
-            global peak_area, peak_height, abs_peak_height, calib_text
+            global peak_area, peak_height, abs_peak_height, calib_text, concentration
             file = open(self.filename,"r")
             for line in file:
                 fields = line.split(",")
@@ -127,6 +129,7 @@ class Researcher(Screen):
             value = result[0]
             val1 = 2-4*a*(c-value)
             conc = (-b+math.sqrt(b ** val1))/(2*a)
+            concentration = str(conc)
             if conc > (-b/2*a)*0.85:
                 calib_text = "High concentration, out of calibration range"
                 print("High concentration, out of calibration range")
@@ -171,6 +174,7 @@ class Results(Screen):
         self.ids.height.text = peak_height
         self.ids.abs.text = abs_peak_height
         self.ids.calib.text = calib_text
+        self.ids.concentration.text = concentration
     
 
 class ContentNavigationDrawer(BoxLayout):
